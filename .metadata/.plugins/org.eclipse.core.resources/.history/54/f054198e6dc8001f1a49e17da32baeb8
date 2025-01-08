@@ -1,0 +1,29 @@
+package com.ars.message.business.response;
+
+import lombok.Builder;
+
+@Builder
+public record UserIndoResponse (
+		
+	     Long id,
+	    
+	     String host,
+		
+	     String port,
+		
+	     String username,
+		
+	     String password,
+		
+	     String protocol, // IMAP, POP3 veya SMTP
+
+	     String mailUser
+
+		
+		
+		) {
+	
+	
+
+
+}

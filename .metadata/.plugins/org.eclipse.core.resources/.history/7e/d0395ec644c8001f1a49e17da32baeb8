@@ -1,0 +1,25 @@
+package com.ars.user.business.concretes;
+
+import org.springframework.stereotype.Service;
+
+import com.ars.user.business.abstracts.SendMessageService;
+import com.ars.user.business.request.SendMessageRequest;
+import com.ars.user.client.RegisteryService;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class SendMessageManager implements SendMessageService {
+
+	
+	private final RegisteryService registeryService;
+
+	
+	@Override
+	public String sendMessage(SendMessageRequest sendMessgeRequest, String token) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

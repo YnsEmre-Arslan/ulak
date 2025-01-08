@@ -1,0 +1,23 @@
+package com.ars.user.business.request;
+
+public record AccountSettingRequest(
+		
+		
+	     String imageUrl,
+		
+	     String username,
+		
+	     String statusText,
+
+	     String name,
+	   
+	     String host,
+	    
+	     String mailAddress,
+	    
+	     String mailPassword
+		
+		
+		) {
+
+}

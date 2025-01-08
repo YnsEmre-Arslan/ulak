@@ -1,0 +1,12 @@
+package com.ars.user.business.abstracts;
+
+import com.ars.user.business.response.AccountSettinResponse;
+
+public interface SettingService {
+	
+	
+	AccountSettinResponse getAccountSetting(String token);
+	
+	
+
+}

@@ -1,0 +1,14 @@
+package com.ars.user.business.concretes;
+
+import com.ars.user.business.abstracts.SendMessage;
+import com.ars.user.business.request.SendMessgeRequest;
+
+public class SendMessageManager implements SendMessage {
+
+	@Override
+	public String sendMessage(SendMessageRequest sendMessgeRequest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,37 @@
+package com.ars.message.webApi.controller;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ars.message.business.abstracts.SentMailService;
+import com.ars.message.business.request.SendEmailRequest;
+
+import jakarta.mail.MessagingException;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/mail/email")
+@RequiredArgsConstructor
+public class SentMailController {
+	
+	
+	private final SentMailService mailService;
+	
+    @PostMapping("/send")
+    public String sendEmail(@RequestBody SendEmailRequest emailRequest) {
+        try {
+        	mailService.sendEmail(
+                emailRequest.from(),
+                emailRequest.to(),
+                emailRequest.subject(),
+                emailRequest.body()
+            );
+            return "Email sent successfully!";
+        } catch (MessagingException e) {
+            return "Error while sending email: " + e.getMessage();
+        }
+    }
+
+}

@@ -1,0 +1,7 @@
+package com.ars.message.business.concretes;
+
+import com.ars.message.business.abstracts.SentMailService;
+
+public class SentMailManager implements SentMailService {
+
+}

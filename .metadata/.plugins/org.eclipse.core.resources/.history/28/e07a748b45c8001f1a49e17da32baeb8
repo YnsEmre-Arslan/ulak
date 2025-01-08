@@ -1,0 +1,35 @@
+package com.ars.user.business.concretes;
+
+import org.springframework.stereotype.Service;
+
+import com.ars.user.business.abstracts.SendMessageService;
+import com.ars.user.business.request.SendMessageRequest;
+import com.ars.user.business.request.TokenRequest;
+import com.ars.user.client.RegisteryService;
+import com.ars.user.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class SendMessageManager implements SendMessageService {
+
+	
+	private final RegisteryService registeryService;
+	private final UserRepository userRepository; 
+
+	
+	@Override
+	public String sendMessage(SendMessageRequest sendMessgeRequest, TokenRequest token) {
+
+		
+		String  username = registeryService.getUsername(token);
+		
+		
+		
+
+		
+		return null;
+	}
+
+}

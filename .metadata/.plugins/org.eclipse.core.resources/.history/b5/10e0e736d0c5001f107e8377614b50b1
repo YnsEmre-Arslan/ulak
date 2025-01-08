@@ -1,0 +1,28 @@
+package com.ars.user.business.concretes;
+
+import org.springframework.stereotype.Service;
+
+import com.ars.user.business.abstracts.SettingService;
+import com.ars.user.business.response.AccountSettinResponse;
+import com.ars.user.client.RegisteryService;
+
+import lombok.AllArgsConstructor;
+
+
+@Service
+@AllArgsConstructor
+public class SettingManager implements SettingService{
+
+	private final RegisteryService registeryService;
+	
+	
+	@Override
+	public AccountSettinResponse getAccountSetting(String token) {
+
+		
+		
+		
+		return null;
+	}
+
+}

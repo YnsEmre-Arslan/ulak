@@ -1,0 +1,15 @@
+package com.ars.message.business.concretes;
+
+import com.ars.message.business.abstracts.SentMailService;
+
+import jakarta.mail.MessagingException;
+
+public class SentMailManager implements SentMailService {
+
+	@Override
+	public void sendEmail(String from, String to, String subject, String body) throws MessagingException {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

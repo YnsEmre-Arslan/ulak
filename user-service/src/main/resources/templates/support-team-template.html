@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeni Destek Talebi</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 700px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #2C3E50;
+            color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+        .header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            margin-top: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .content p {
+            margin: 15px 0;
+        }
+        .content p strong {
+            color: #1E2A3A;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #777;
+            text-align: center;
+        }
+        .footer p {
+            margin-top: 10px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+        .section-title {
+            font-size: 18px;
+            color: #2C3E50;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .highlight {
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Yeni Destek Talebi Alındı</h2>
+        </div>
+        <div class="content">
+            <p>Merhaba <strong>Destek Ekibi</strong>,</p>
+            
+            <p><span class="section-title">Yeni Bir Destek Talebi Alındı</span></p>
+            <p>Aşağıdaki bilgilerle yeni bir destek talebi alınmıştır. Lütfen en kısa sürede bu talebe geri dönün.</p>
+            
+            <!-- Destek talebine dair bilgiler -->
+            <p><strong>Destek Talep Başlığı:</strong> <span th:text="${supportTitle}"></span></p>
+            <p><strong>Mesaj:</strong> <span th:text="${supportMessage}"></span></p>
+            
+            <p><span class="section-title">Kullanıcı Bilgileri:</span></p>
+            <p><strong>Kullanıcı Adı:</strong> <span th:text="${userName}"></span></p>
+            <p><strong>Kullanıcı E-posta:</strong> <span th:text="${userEmail}"></span></p>
+            
+            <p><span class="section-title">Ekstra Bilgi:</span></p>
+            <p><strong>Ekstra Bilgi:</strong> <span th:text="${additionalInfo}"></span></p>
+            
+            <!-- İşlem için Button -->
+            <p>Destek talebini değerlendirmek için aşağıdaki butona tıklayarak ekibinizle iletişime geçebilirsiniz:</p>
+            <a href="mailto:info@arst.tr" class="button">İletişim Kurun</a>
+        </div>
+        <div class="footer">
+            <p>Ulak Haberleşme Destek Ekibi</p>
+            <p>© 2025 Ulak Haberleşme. Tüm Hakları Saklıdır.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+package com.ars.message.business.request;
+
+public record SendEmailRequest(
+		
+	     String from,
+	     String to,
+	     String subject,
+	     String body)
+{
+
+}

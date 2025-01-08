@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ulak Haberleşme - Doğrulama Kodu</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .email-wrapper {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .email-header {
+            background-color: #6c757d;
+            color: #ffffff;
+            padding: 30px;
+            text-align: center;
+        }
+        .email-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .email-content {
+            padding: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .verification-code {
+            font-size: 32px;
+            font-weight: bold;
+            color: #495057;
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .footer {
+            background-color: #f4f4f4;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+        }
+        .footer a {
+            color: #6c757d;
+            text-decoration: none;
+        }
+        .button {
+            display: inline-block;
+            background-color: #6c757d;
+            color: #ffffff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="email-header">
+            <h1>Ulak Haberleşme - Hesap Doğrulama</h1>
+        </div>
+        <div class="email-content">
+            <p>Merhaba <strong th:text="${name}"></strong>,</p>
+            <p>Hesabınızı doğrulamak için aşağıdaki doğrulama kodunu 5 dakika içinde girmeniz gerekmektedir:</p>
+            <div class="verification-code">
+                <span th:text="${code}"></span>
+            </div>
+            <p>Bu kodu kullanarak hesabınızı doğrulayabilirsiniz. Eğer siz bu işlemi gerçekleştirmediyseniz, lütfen bu e-postayı dikkate almayın.</p>
+            <p>Teşekkürler,</p>
+            <p>Ulak Haberleşme Ekibi</p>
+        </div>
+        <div class="footer">
+            <p>Ulak Haberleşme | <a href="https://ulak.arst.tr">ulak.arst.tr</a></p>
+        </div>
+    </div>
+</body>
+</html>

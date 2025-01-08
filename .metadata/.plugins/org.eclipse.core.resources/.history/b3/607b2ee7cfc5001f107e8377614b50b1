@@ -1,0 +1,10 @@
+package com.ars.user.business.abstracts;
+
+public interface SettingService {
+	
+	
+	
+	
+	
+
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ulak Haberleşme - Destek Talebiniz Alındı</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .email-wrapper {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .email-header {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 30px;
+            text-align: center;
+        }
+        .email-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .email-content {
+            padding: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .support-message {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .footer {
+            background-color: #f4f4f4;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="email-header">
+            <h1>Ulak Haberleşme - Destek Talebiniz Alındı</h1>
+        </div>
+        <div class="email-content">
+            <p>Merhaba <strong th:text="${userName}"></strong>,</p>
+            <p>Destek talebiniz başarıyla alındı. En kısa sürede ekibimiz size geri dönüş yapacaktır.</p>
+            <div class="support-message">
+                <p><strong>Destek Talebi Başlığı:</strong> <span th:text="${supportTitle}"></span></p>
+                <p><strong>Destek Talebiniz:</strong></p>
+                <p th:text="${supportMessage}"></p>
+            </div>
+            <p>Başka bir sorunuz olursa, lütfen bizimle iletişime geçmekten çekinmeyin.</p>
+            <p>Teşekkürler,</p>
+            <p>Ulak Haberleşme Destek Ekibi</p>
+        </div>
+        <div class="footer">
+            <p>Ulak Haberleşme | <a href="https://ulak.arst.tr">ulak.arst.tr</a></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;MailConfigRepository.java&apos; to &apos;message/src/main/java/com.ars.message.repository&apos;&#x0A;- Original project: &apos;mail-check-server&apos;&#x0A;- Destination element: &apos;message/src/main/java/com.ars.message.repository&apos;&#x0A;- Original element: &apos;com.arst.check.repository.MailConfigRepository.java&apos;" description="Copy compilation unit" destination="=message/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.ars.message.repository" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.arst.check.repository{MailConfigRepository.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1735236899215" units="1" version="1.0"/>
+</session>

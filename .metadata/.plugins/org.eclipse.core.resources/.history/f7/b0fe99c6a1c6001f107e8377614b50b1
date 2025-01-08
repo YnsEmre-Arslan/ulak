@@ -1,0 +1,37 @@
+package com.ars.user.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.netty.http.client.HttpClient;
+import reactor.netty.tcp.SslProvider;
+import io.netty.handler.ssl.SslContextBuilder;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+
+@Configuration
+public class WebClientConfig {
+
+    //@Bean
+    //public WebClient.Builder webClientBuilder() {
+    //    return WebClient.builder();
+   // }
+	
+	
+    @Bean
+    public WebClient.Builder webClientBuilder() {
+        // SSLContext oluşturuluyor
+        SslProvider sslProvider = SslProvider.builder()
+                .sslContext(SslContextBuilder.forClient().build()) // SSLContext burada tanımlanır
+                .build();
+
+        // HttpClient ile güvenli bağlantı yapılandırması
+        HttpClient httpClient = HttpClient.create()
+                .secure(ssl -> ssl.sslProvider(sslProvider)); // secure() ile SSL provider ekleniyor
+
+        // WebClient oluşturuluyor
+        return WebClient.builder()
+                .clientConnector(new ReactorClientHttpConnector(httpClient));
+    }
+	
+}
+

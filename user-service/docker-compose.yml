@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-service
+    ports:
+      - "5425:5432"  # Host port 54325 -> Container port 5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: user_service
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    ports:
+      - "8081:80"  # pgAdmin web interface
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: pass
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:

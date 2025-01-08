@@ -1,0 +1,116 @@
+package com.ars.user.business.concretes;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ars.user.business.abstracts.UserService;
+import com.ars.user.business.dto.UserDto;
+import com.ars.user.business.request.UserAdd;
+import com.ars.user.business.request.UserRequest;
+import com.ars.user.business.response.UserInfoResponse;
+import com.ars.user.client.RegisteryService;
+import com.ars.user.entities.User;
+import com.ars.user.repository.UserRepository;
+
+@Service
+public class UserManager implements UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+    
+    @Autowired
+    private  RegisteryService registeryService;
+
+
+    private final String uploadDir = System.getProperty("user.dir") + "/uploads/profile-pictures/";
+
+    public UserDto registerUser(UserRequest userRequest) throws IOException {
+    	
+
+        // Profil fotoğrafını kaydetme
+        String profilePictureUrl = null;
+        
+        if (userRequest.file() != null) {
+        	
+            // Dosyayı sunucuda kaydetme
+            Path uploadPath = Paths.get(uploadDir);
+            
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            String originalFilename = userRequest.file().getOriginalFilename();
+            String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1); // Dosya uzantısını al
+
+            String fileName = userRequest.username() + "." + extension; // E-posta ile dosya uzantısını birleştir
+            
+            Path filePath = uploadPath.resolve(fileName);
+            
+            userRequest.file().transferTo(filePath.toFile());
+
+            // Fotoğraf URL'sini oluşturma
+            profilePictureUrl = "https://localhost:8443/"+ "uploads/profile-pictures/" + fileName;
+        }
+
+        // Kullanıcıyı kaydetme
+        User user = new User();
+        user.setName(userRequest.name());
+        user.setSurname(userRequest.surname());
+        user.setStatus(userRequest.status());
+        
+        user.setHost(userRequest.ip());
+        user.setPort(userRequest.port());
+        user.setEmail(userRequest.email());
+        user.setPassword(userRequest.password()); 
+        
+        user.setUsername(userRequest.username());
+        user.setPhone(userRequest.phone());
+        
+        
+        user.setProfilePictureUrl(profilePictureUrl);
+        
+        user.setNotification(null);
+        
+        
+    	UserAdd RegisteryUser = UserAdd.builder()
+                .firstName(userRequest.name())
+                .lastName(userRequest.surname())
+                .login(userRequest.username())
+                .password(userRequest.password())
+                .build();
+
+       UserDto response =  registeryService.addUser(RegisteryUser);
+        
+       userRepository.save(user);
+       return response;
+    }
+
+	@Override
+	public UserInfoResponse getUserConfig(String username) {
+
+		
+		User user = userRepository.findByUsername(username);
+
+		UserInfoResponse userIndoResponse = UserInfoResponse.builder()
+				
+				.id(user.getId().longValue())
+				.host(user.getHost())
+				.port(user.getPort())
+				.username(user.getUsername())
+				.password(user.getPassword())
+				.protocol("")
+				.mailUser(user.getUsername()).build();
+		
+		return userIndoResponse;
+	}
+
+
+    
+
+}
+

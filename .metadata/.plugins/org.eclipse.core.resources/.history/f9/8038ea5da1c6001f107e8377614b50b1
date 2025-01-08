@@ -1,0 +1,45 @@
+package com.ars.user.config;
+
+import org.apache.http.impl.client.HttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import reactor.netty.http.client.HttpClient;
+
+import javax.net.ssl.SSLContext;
+import java.io.File;
+
+@Configuration
+public class WebClientConfig {
+
+    //@Bean
+    //public WebClient.Builder webClientBuilder() {
+    //    return WebClient.builder();
+   // }
+	
+	
+    @Bean
+    public WebClient.Builder webClientBuilder() throws Exception {
+        // SSL Context ile HttpClient yapılandırması
+        SSLContext sslContext = SSLContextBuilder.create()
+                .loadTrustMaterial(new File("path/to/your/truststore.jks"), "yourpassword".toCharArray())
+                .build();
+        
+        HttpClient httpClient = HttpClients.custom()
+                .setSslcontext(sslContext)
+                .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                .build();
+        
+        return WebClient.builder()
+                .clientConnector(new ReactorClientHttpConnector(HttpClient.from(httpClient)));
+    }
+	
+}
+

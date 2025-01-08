@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: mail-message
+    ports:
+      - "5406:5432"  # Host port 54306 -> Container port 5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mail_message
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

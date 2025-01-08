@@ -1,0 +1,17 @@
+package com.ars.user.business.concretes;
+
+import com.ars.user.business.abstracts.SettingService;
+import com.ars.user.business.response.AccountSettinResponse;
+
+public class SettingManager implements SettingService{
+
+	@Override
+	public AccountSettinResponse getAccountSetting(String token) {
+
+		
+		
+		
+		return null;
+	}
+
+}

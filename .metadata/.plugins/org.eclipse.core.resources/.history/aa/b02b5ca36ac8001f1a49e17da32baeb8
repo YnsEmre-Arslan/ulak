@@ -1,0 +1,56 @@
+package com.ars.message.client;
+
+import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+
+import com.ars.user.business.request.SendEmailRequest;
+import com.ars.user.business.response.ContactResponse;
+import com.ars.user.business.response.MailServerConfig;
+
+@Service
+public class MessageService {
+
+	private final WebClient webClient;
+
+	public MessageService(WebClient.Builder webClientBuilder) {
+		this.webClient = webClientBuilder.baseUrl("https://localhost:8087").build(); // API'nizin base URL'i
+	}
+
+
+	
+   /* public String sendMail(SendEmailRequest sendMailRequest) {
+        try {
+            return webClient.post()
+                    .uri("/mail/email/send")
+                    //.header(HttpHeaders.AUTHORIZATION, "Bearer " + token.token()) // Token'ı başlığa ekliyoruz
+                    .bodyValue(sendMailRequest) // Body kısmı
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block(); // Bloklamak, eşzamanlı işlem için
+        } catch (WebClientResponseException ex) {
+            // Hata durumlarını ele alıyoruz
+            throw new RuntimeException("Error sent mail to : " + ex.getMessage(), ex);
+        }
+      */
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

@@ -1,0 +1,5 @@
+package com.ars.user.entities;
+
+public class Notification {
+
+}

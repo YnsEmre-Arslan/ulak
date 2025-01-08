@@ -1,0 +1,46 @@
+package com.ars.message.business.concretes;
+
+import java.util.Properties;
+
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+
+import com.ars.message.business.abstracts.SentMailService;
+import com.ars.message.business.request.SendEmailRequest;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+
+@Service
+public class SentMailManager implements SentMailService {
+
+    public void sendEmail(SendEmailRequest emailRequest) throws MessagingException {
+        // JavaMailSender yapılandırması
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost(emailRequest.host());
+        mailSender.setPort(emailRequest.port());
+        mailSender.setUsername(emailRequest.from());
+        mailSender.setPassword(emailRequest.password());
+
+        // SMTP özellikleri
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.debug", "true");
+
+        // E-posta mesajını oluşturma
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom(emailRequest.from());
+        helper.setTo(emailRequest.to());
+        helper.setSubject("Ulak Haberleşme");
+        helper.setText(emailRequest.body(), true);
+
+        // E-postayı gönderme
+        mailSender.send(message);
+    }
+
+
+}

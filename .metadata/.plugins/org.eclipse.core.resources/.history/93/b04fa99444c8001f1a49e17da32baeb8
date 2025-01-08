@@ -1,0 +1,9 @@
+package com.ars.user.business.abstracts;
+
+import com.ars.user.business.request.SendMessageRequest;
+
+public interface SendMessageService {
+	
+	String sendMessage(SendMessageRequest sendMessgeRequest, TokenRequest token);
+
+}

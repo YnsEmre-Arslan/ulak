@@ -1,0 +1,5 @@
+package com.arst.check.business.request;
+
+public record SupportRequest() {
+
+}

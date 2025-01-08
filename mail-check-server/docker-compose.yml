@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: mail_container
+    environment:
+      POSTGRES_USER: yns
+      POSTGRES_PASSWORD: Ars_lan1876!
+      POSTGRES_DB: mail
+    ports:
+      - "5426:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  postgres_data:

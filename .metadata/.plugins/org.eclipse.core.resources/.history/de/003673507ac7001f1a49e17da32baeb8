@@ -1,0 +1,19 @@
+package com.ars.user.business.abstracts;
+
+import java.util.List;
+
+import com.ars.user.business.response.AccountSettinResponse;
+import com.ars.user.business.response.ChatResponse;
+import com.ars.user.business.response.NotificationResponse;
+
+public interface SettingService {
+	
+	
+	AccountSettinResponse getAccountSetting(String token);
+	
+	List<ChatResponse> getChatSetting(String token);
+	
+	NotificationResponse getNotification(String token);
+	
+
+}

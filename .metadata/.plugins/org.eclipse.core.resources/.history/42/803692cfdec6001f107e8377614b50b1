@@ -1,0 +1,5 @@
+package com.arst.check.config;
+
+public class SecurityConfig {
+
+}

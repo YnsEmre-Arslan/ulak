@@ -1,0 +1,42 @@
+package com.ars.user.webApi.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ars.user.business.abstracts.SettingService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/users")
+public class SettingController {
+
+	
+	private final SettingService service;
+	
+	
+    @GetMapping("/account-setting")
+    public ResponseEntity<?> getContacts(HttpServletRequest request) {
+
+        // Header'dan token al
+        String token = request.getHeader("Authorization");
+
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.status(400).body("Token bulunamadı.");
+        }
+
+        // Token'ı temizle (eğer "Bearer " ile başlıyorsa)
+        String extractedToken = token.replace("Bearer ", "");
+        
+        service.getAccountSetting(extractedToken);
+    	
+    	
+    	return ResponseEntity.ok("");
+    }
+	
+	
+}

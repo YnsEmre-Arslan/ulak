@@ -1,0 +1,5 @@
+package com.ars.user.business.response;
+
+public interface NotificationResponse {
+
+}

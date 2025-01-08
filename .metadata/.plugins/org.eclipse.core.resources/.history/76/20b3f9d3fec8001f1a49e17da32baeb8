@@ -1,0 +1,12 @@
+package com.ars.message.business.abstracts;
+
+import com.ars.message.business.request.SendEmailRequest;
+
+import jakarta.mail.MessagingException;
+
+public interface SentMailService {
+    public void sendEmail(SendEmailRequest emailRequest) throws MessagingException;
+    
+    public void deleteEmail(String messageId, String host, String username, String password) throws MessagingException;
+
+}

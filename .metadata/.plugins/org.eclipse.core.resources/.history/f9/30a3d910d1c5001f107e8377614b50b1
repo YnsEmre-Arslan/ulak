@@ -1,0 +1,5 @@
+package com.ars.user.webApi.controller;
+
+public class SettingController {
+
+}

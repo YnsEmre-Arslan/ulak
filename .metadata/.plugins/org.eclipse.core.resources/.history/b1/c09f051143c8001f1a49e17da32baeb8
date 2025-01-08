@@ -1,0 +1,5 @@
+package com.ars.user.business.concretes;
+
+public class SendMessageManager {
+
+}

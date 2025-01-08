@@ -1,0 +1,5 @@
+package com.ars.user.business.request;
+
+public record DeleteMessageRequest(String messageId, String host, String username, String password) {
+
+}

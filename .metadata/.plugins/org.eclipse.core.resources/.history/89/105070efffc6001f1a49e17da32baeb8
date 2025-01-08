@@ -1,0 +1,25 @@
+spring.application.name=mail-check-server
+
+server.port = 8085
+
+
+spring.datasource.url=jdbc:postgresql://localhost:5426/mail
+spring.datasource.username=yns
+spring.datasource.password=Ars_lan1876!
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.use_sql_comments=true
+
+
+springdoc.swagger-ui.path=/swagger-ui.htnl
+springdoc.api-docs.path=/api-docs
+
+
+#server.ssl.key-store=classpath:keystore.p12
+#server.ssl.key-store-password=Ars_lan1876!
+#server.ssl.key-store-type=PKCS12
+#server.ssl.key-alias=tomcat
+#server.jetty.accesslog.enabled=true

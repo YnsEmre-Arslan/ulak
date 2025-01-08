@@ -1,0 +1,5 @@
+package com.ars.message.webApi.controller;
+
+public class SentMailController {
+
+}

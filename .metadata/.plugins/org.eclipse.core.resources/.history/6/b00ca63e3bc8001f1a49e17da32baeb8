@@ -1,0 +1,32 @@
+package com.ars.message.business.request;
+
+public class EmailAccount {
+    private String address;
+    private String password;
+    private String host;
+    private int port;
+
+    public EmailAccount(String address, String password, String host, int port) {
+        this.address = address;
+        this.password = password;
+        this.host = host;
+        this.port = port;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+}
+

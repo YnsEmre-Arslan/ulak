@@ -1,0 +1,172 @@
+package com.ars.message.business.concretes;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+
+import org.jsoup.Jsoup;
+import org.springframework.stereotype.Service;
+
+import com.ars.message.business.response.ContactResponse;
+import com.ars.message.business.response.MessageResponse;
+import com.ars.message.entities.MailServerConfig;
+
+import jakarta.mail.Address;
+import jakarta.mail.Folder;
+import jakarta.mail.Message;
+import jakarta.mail.Session;
+import jakarta.mail.Store;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMultipart;
+
+@Service
+public class MailReaderManager {
+
+    private  String userMailAddress;
+
+
+    public List<ContactResponse> readMails(MailServerConfig config) throws Exception {
+    	
+    	userMailAddress = config.getMailUser();
+    	
+        List<ContactResponse> contacts = new ArrayList<>();
+
+        Properties props = new Properties();
+        props.put("mail.store.protocol", config.getProtocol());
+        props.put("mail.imap.host", config.getHost());
+        props.put("mail.imap.port", config.getPort());
+
+        if ("imaps".equalsIgnoreCase(config.getProtocol())) {
+            props.put("mail.imap.ssl.enable", "true");
+            props.put("mail.imap.ssl.trust", "*");
+        }
+
+        Session session = Session.getDefaultInstance(props, null);
+        session.setDebug(false);
+
+        Store store = session.getStore(config.getProtocol());
+        store.connect(config.getHost(), config.getUsername(), config.getPassword());
+
+        Folder defaultFolder = store.getDefaultFolder();
+        Folder[] folders = defaultFolder.list();
+
+        // Folder'lar üzerinde dönelim
+        for (Folder folder : folders) {
+            if (folder.getName().equalsIgnoreCase("Trash") || folder.getName().equalsIgnoreCase("Deleted Items")) {
+                continue; // Çöp kutusu klasörünü atla
+            }
+
+            try {
+                folder.open(Folder.READ_ONLY);
+                Message[] messages = folder.getMessages();
+
+                for (Message message : messages) {
+                    String sender = getSenderEmail(message);
+                    String recipient = getRecipientEmail(message);
+                    String subject = message.getSubject();
+                    String content = getTextFromMessage(message);
+                    String date = message.getSentDate().toString();
+
+                    // Yeni bir MessageResponse oluşturuyoruz
+                    MessageResponse messageResponse = new MessageResponse();
+                    messageResponse.setId(message.getHeader("Message-ID")[0]);
+                    messageResponse.setText(content);
+                    messageResponse.setTime(message.getSentDate().toString());
+                    messageResponse.setDate(date);
+                    messageResponse.setSent(isSent(sender));
+
+                    // Hangi kişinin konuşmasına ekleyeceğimizi belirle
+                    String contactKey = recipient.equals(userMailAddress) ? sender : recipient;
+                    ContactResponse contactResponse = findOrCreateContactResponse(contacts, contactKey);
+
+                    // ContactResponse içinde mesajı ekle
+                    if (contactResponse != null) {
+                        contactResponse.getMessages().add(messageResponse);
+                    }
+                }
+
+                folder.close(false);
+            } catch (Exception e) {
+                System.out.println("Error reading folder: " + folder.getName());
+                e.printStackTrace();
+            }
+        }
+
+        store.close();
+
+        // Mesajları tarihe göre sıralama
+        for (ContactResponse contact : contacts) {
+            contact.getMessages().sort(Comparator.comparing(MessageResponse::getDate));
+        }
+
+        return contacts;
+    }
+
+    private String getSenderEmail(Message message) throws Exception {
+        Address[] fromAddresses = message.getFrom();
+        if (fromAddresses != null && fromAddresses.length > 0) {
+            return ((InternetAddress) fromAddresses[0]).getAddress();
+        }
+        return null;
+    }
+
+    private String getRecipientEmail(Message message) throws Exception {
+        Address[] toAddresses = message.getRecipients(Message.RecipientType.TO);
+        if (toAddresses != null && toAddresses.length > 0) {
+            return ((InternetAddress) toAddresses[0]).getAddress();
+        }
+        return null;
+    }
+
+    private boolean isSent(String sender) {
+        return sender.equals(userMailAddress); // Eğer gönderen benim mail adresimse gönderilen maildir
+    }
+
+    private ContactResponse findOrCreateContactResponse(List<ContactResponse> contacts, String contactKey) {
+        // Bu kontak zaten var mı kontrol et
+        for (ContactResponse contact : contacts) {
+            if (contact.getMailAddress().equals(contactKey)) {
+                return contact;
+            }
+        }
+
+        // Eğer yoksa yeni bir ContactResponse oluştur
+        ContactResponse newContact = new ContactResponse();
+        newContact.setMailAddress(contactKey);
+        newContact.setMessages(new ArrayList<>());
+        contacts.add(newContact);
+        return newContact;
+    }
+
+    private String getTextFromMessage(Message message) throws Exception {
+        Object content = message.getContent();
+        Set<String> uniqueContents = new HashSet<>();
+
+        if (content instanceof String) {
+            String plainText = Jsoup.parse((String) content).text();
+            uniqueContents.add(plainText);
+        } else if (content instanceof MimeMultipart) {
+            extractContentFromMimeMultipart((MimeMultipart) content, uniqueContents);
+        }
+
+        return String.join("\n", uniqueContents);
+    }
+
+    private void extractContentFromMimeMultipart(MimeMultipart mimeMultipart, Set<String> uniqueContents) throws Exception {
+        int count = mimeMultipart.getCount();
+        for (int i = 0; i < count; i++) {
+            var bodyPart = mimeMultipart.getBodyPart(i);
+            if (bodyPart.isMimeType("text/plain")) {
+                uniqueContents.add(bodyPart.getContent().toString());
+            } else if (bodyPart.isMimeType("text/html")) {
+                String htmlContent = Jsoup.parse((String) bodyPart.getContent()).text();
+                uniqueContents.add(htmlContent);
+            } else if (bodyPart.getContent() instanceof MimeMultipart) {
+                extractContentFromMimeMultipart((MimeMultipart) bodyPart.getContent(), uniqueContents);
+            }
+        }
+    }
+}

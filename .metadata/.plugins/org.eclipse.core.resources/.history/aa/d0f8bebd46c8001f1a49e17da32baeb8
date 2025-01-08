@@ -1,0 +1,64 @@
+package com.ars.message.business.concretes;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+
+import com.ars.message.business.abstracts.SentMailService;
+import com.ars.message.business.request.EmailAccount;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+
+@Service
+public class SentMailManager implements SentMailService {
+
+	
+    private final Map<String, EmailAccount> emailAccounts;
+
+    public SentMailManager() {
+        // E-posta hesaplarını burada tanımlıyoruz. İsterseniz bu bilgileri bir veritabanından alabilirsiniz.
+        emailAccounts = new HashMap<>();
+        emailAccounts.put("example1@mail.com", new EmailAccount("example1@mail.com", "password1", "smtp.mail.com", 587));
+        emailAccounts.put("example2@mail.com", new EmailAccount("example2@mail.com", "password2", "smtp.othermail.com", 465));
+    }
+	
+	
+	@Override
+    public void sendEmail(String from, String to, String subject, String body) throws MessagingException {
+        EmailAccount account = emailAccounts.get(from);
+        if (account == null) {
+            throw new IllegalArgumentException("E-posta adresi bulunamadı: " + from);
+        }
+
+        // JavaMailSender yapılandırması
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost(account.getHost());
+        mailSender.setPort(account.getPort());
+        mailSender.setUsername(account.getAddress());
+        mailSender.setPassword(account.getPassword());
+
+        // SMTP özellikleri
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.debug", "true");
+
+        // E-posta mesajını oluşturma
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom(account.getAddress());
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(body, true);
+
+        // E-postayı gönderme
+        mailSender.send(message);
+    }
+
+}

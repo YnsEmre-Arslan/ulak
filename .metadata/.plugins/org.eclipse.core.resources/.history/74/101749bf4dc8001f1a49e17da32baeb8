@@ -1,0 +1,82 @@
+package com.ars.message.business.concretes;
+
+import java.util.Properties;
+
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+
+import com.ars.message.business.abstracts.SentMailService;
+import com.ars.message.business.request.SendEmailRequest;
+
+import jakarta.mail.Folder;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
+import jakarta.mail.Store;
+import jakarta.mail.internet.MimeMessage;
+
+@Service
+public class SentMailManager implements SentMailService {
+
+    public void sendEmail(SendEmailRequest emailRequest) throws MessagingException {
+        // JavaMailSender yapılandırması
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost(emailRequest.host());
+        mailSender.setPort(emailRequest.port());
+        mailSender.setUsername(emailRequest.from());
+        mailSender.setPassword(emailRequest.password());
+
+        // SMTP özellikleri
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.debug", "true");
+
+        // E-posta mesajını oluşturma
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        
+        helper.setFrom(emailRequest.from());
+        helper.setTo(emailRequest.to());
+        helper.setSubject("Ulak Haberleşme"); // Başlık için de UTF-8 kullanılıyor
+        helper.setText(emailRequest.body(), true);  // HTML içeriği UTF-8 olarak gönderiliyor
+
+        // E-postayı gönderme
+        mailSender.send(message);
+
+        // IMAP bağlantısı kurma ve gönderilen e-postayı "Sent" klasörüne kaydetme
+        saveToSentFolder(emailRequest, message);
+    }
+
+    private void saveToSentFolder(SendEmailRequest emailRequest, MimeMessage message) throws MessagingException {
+        // IMAP üzerinden mail sunucusuna bağlanma
+        Properties properties = new Properties();
+        properties.put("mail.store.protocol", "imap");
+        properties.put("mail.imap.host", emailRequest.host());
+        properties.put("mail.imap.port", "993");  // IMAP SSL portu
+        properties.put("mail.imap.ssl.enable", "true");
+
+        // Kullanıcı adı ve şifre ile IMAP bağlantısı açma
+        Session emailSession = Session.getInstance(properties);
+        Store store = emailSession.getStore("imap");
+        store.connect(emailRequest.host(), emailRequest.from(), emailRequest.password());
+
+        // "Sent" klasörüne bağlanma
+        Folder sentFolder = store.getFolder("Sent");
+        if (!sentFolder.exists()) {
+            sentFolder.create(Folder.HOLDS_MESSAGES);
+        }
+        sentFolder.open(Folder.READ_WRITE);
+
+        // Gönderilen mesajı "Sent" klasörüne kaydetme
+        sentFolder.appendMessages(new Message[]{message});
+
+        // Bağlantıyı kapatma
+        sentFolder.close(false);
+        store.close();
+    }
+}
+
+

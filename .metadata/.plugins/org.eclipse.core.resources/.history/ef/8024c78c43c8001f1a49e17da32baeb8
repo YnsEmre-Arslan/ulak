@@ -1,0 +1,10 @@
+package com.ars.user.business.request;
+
+public record SendMessageRequest(
+		
+		String token,
+		String to
+		
+		) {
+
+}

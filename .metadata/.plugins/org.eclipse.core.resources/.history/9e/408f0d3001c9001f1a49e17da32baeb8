@@ -1,0 +1,17 @@
+spring.application.name=message
+
+server.port = 8087
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.hibernate.show-sql=true
+spring.datasource.url=jdbc:postgresql://localhost:5406/mail_message
+spring.datasource.username=root
+spring.datasource.password=password
+spring.jpa.properties.jakarta.persistence.validation.mode = none
+spring.jpa.open-in-view=false
+
+server.ssl.key-store=classpath:keystore.p12
+server.ssl.key-store-password=Ars_lan1876!
+server.ssl.key-store-type=PKCS12
+server.ssl.key-alias=tomcat
+server.jetty.accesslog.enabled=true

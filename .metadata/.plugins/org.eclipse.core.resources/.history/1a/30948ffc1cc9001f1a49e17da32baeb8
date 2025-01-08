@@ -1,0 +1,86 @@
+package com.ars.user.business.concretes;
+
+import org.springframework.stereotype.Service;
+
+import com.ars.user.business.abstracts.SendMessageService;
+import com.ars.user.business.request.DeleteMessageRequest;
+import com.ars.user.business.request.SendEmailRequest;
+import com.ars.user.business.request.SendMessageRequest;
+import com.ars.user.business.request.TokenRequest;
+import com.ars.user.business.request.UpdateMessageRequest;
+import com.ars.user.client.MessageService;
+import com.ars.user.client.RegisteryService;
+import com.ars.user.entities.User;
+import com.ars.user.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class SendMessageManager implements SendMessageService {
+
+	private final RegisteryService registeryService;
+	private final UserRepository userRepository;
+	private final MessageService messageService;
+
+	@Override
+	public String sendMessage(SendMessageRequest sendMessgeRequest, TokenRequest token) {
+
+		String username = registeryService.getUsername(token);
+
+		User user = userRepository.findByUsername(username);
+
+		SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
+
+				.host(user.getHost()).port(Integer.parseInt(user.getPort())).from(user.getEmail())
+				.password(user.getPassword()).to(sendMessgeRequest.to()).body(sendMessgeRequest.message()).build();
+
+		messageService.sendMail(sendEmailRequest);
+
+		return null;
+	}
+	
+	
+	@Override
+	public String updateMail(UpdateMessageRequest updateMessageRequest, TokenRequest token) {
+
+		String username = registeryService.getUsername(token);
+
+		User user = userRepository.findByUsername(username);
+
+		UpdateMessageRequest updateMessageRequests = UpdateMessageRequest.builder()
+				.messageId("")
+				.host(user.getHost())
+				.username(user.getEmail())
+				.password(user.getPassword())
+				.newText("").build();
+
+		String newId =  messageService.updateMail(updateMessageRequest);
+
+		return newId;
+	}
+
+	
+	
+	
+	@Override
+	public String deleteMail(DeleteMessageRequest deleteMessageRequest, TokenRequest token) {
+
+		String username = registeryService.getUsername(token);
+
+		User user = userRepository.findByUsername(username);
+
+		DeleteMessageRequest updateMessageRequests = DeleteMessageRequest.builder()
+				.messageId("")
+				.host(user.getHost())
+				.username(user.getEmail())
+				.password(user.getPassword()).build();
+
+		String response = messageService.deleteMail(deleteMessageRequest);
+
+		return response;
+	}
+	
+	
+
+}
