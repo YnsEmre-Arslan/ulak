@@ -39,7 +39,7 @@ public class ContactManager implements ContactService {
 		if (!status) {
 			Contac contac = Contac.builder().userContact(username).name(addRequest.name()).surname(addRequest.surname())
 					.mailAddress(addRequest.mailAddress())
-					.imageUrl("http://localhost:8443/uploads/profile-pictures/empty.png").build();
+					.imageUrl("http://ulak.arst.tr:8443/uploads/profile-pictures/empty.png").build();
 
 			contacRepository.save(contac);
 		} else
@@ -73,7 +73,7 @@ public class ContactManager implements ContactService {
 				userMessage.setImageUrl(
 
 						userRepository.findProfilePictureUrlByEmail(contact.getMailAddress())
-								.orElse("https://localhost:8443/uploads/profile-pictures/empty.png")
+								.orElse("https://ulak.arst.tr:8443/uploads/profile-pictures/empty.png")
 
 				);
 				userMessage.setName(contact.getName() + " " + contact.getSurname());
@@ -85,7 +85,7 @@ public class ContactManager implements ContactService {
 				userMessage.setImageUrl(
 
 						userRepository.findProfilePictureUrlByEmail(userMessage.getMailAddress())
-						.orElse("https://localhost:8443/uploads/profile-pictures/empty.png")
+						.orElse("https://ulak.arst.tr:8443/uploads/profile-pictures/empty.png")
 
 				);
 				userMessage.setName(userMessage.getMailAddress());

@@ -95,7 +95,7 @@ public class SentMailManager implements SentMailService {
         props.put("mail.imap.ssl.enable", "true");
 
         // Oturum oluşturma
-        Session session = Session.getDefaultInstance(props, null);
+        Session session = Session.getInstance(props, null);
         Store store = session.getStore("imap");
         store.connect(deleteMessageRequest.username(), deleteMessageRequest.password());
 
@@ -155,7 +155,7 @@ public class SentMailManager implements SentMailService {
         props.put("mail.imap.ssl.enable", "true");
 
         // Oturum oluşturma
-        Session session = Session.getDefaultInstance(props, null);
+        Session session = Session.getInstance(props, null);
         Store store = session.getStore("imap");
         store.connect(updateMessageRequest.username(), updateMessageRequest.password());
 

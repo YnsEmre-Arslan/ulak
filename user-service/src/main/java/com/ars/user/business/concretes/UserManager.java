@@ -55,7 +55,7 @@ public class UserManager implements UserService {
 			userRequest.file().transferTo(filePath.toFile());
 
 			// Fotoğraf URL'sini oluşturma
-			profilePictureUrl = "https://localhost:8443/" + "uploads/profile-pictures/" + fileName;
+			profilePictureUrl = "https://ulak.arst.tr:8443/" + "uploads/profile-pictures/" + fileName;
 		}
 
 		// E-posta adresi kontrolü
@@ -96,7 +96,7 @@ public class UserManager implements UserService {
 		userRepository.save(user);
 
 		Contac contac = Contac.builder().userContact(user.getUsername()).name("Ulak").surname("Haberleşme")
-				.mailAddress("info@arst.tr").imageUrl("http://localhost:8443/uploads/profile-pictures/ulak.png")
+				.mailAddress("info@arst.tr").imageUrl("http://ulak.arst.tr:8443/uploads/profile-pictures/ulak.png")
 				.build();
 
 		contacRepository.save(contac);
